@@ -1,22 +1,16 @@
+'use client';
+
+import { NextPage } from 'next'
 import React from "react";
-import { Footer } from "@/components/custom-ui/footer/footer";
-import { Navbar } from "@/components/custom-ui/header/navbar/navbar";
 import { Hero } from "@/components/custom-ui/landing-page/hero/hero";
 
-const Home: React.FC = () => {
+const Home: NextPage = () => {
   return (
     <>
-      {/* Section 1: Navigation */}
-      <section aria-label="Navigation">
-        <Navbar />
-      </section>
+      
       {/* Section 2: Hero */}
       <section aria-label="Hero">
         <Hero />
-      </section>
-      {/* Section 3: Footer */}
-      <section aria-label="Footer">
-        <Footer></Footer>
       </section>
     </>
   );
@@ -82,3 +76,34 @@ export default Home;
  * is a good practice for accessibility.
  *
  */
+
+/**
+* =====================================================================
+*   COMPONENT  REVISION
+* =====================================================================
+* Date Revised : 2024-04-11          (last date you made a code change)
+* Dev Initials : Elias Emon
+* ------------------------------
+* Question: Why was it necessary to revise this component?
+* Answer  : The revision was necessary to add functionality or make improvements to the Home page component.
+*
+* ------------------------------
+* Describe Your Change(s): 
+* - The Navigation bar and the Footer are moved to the root layout because it the standrad coding style.
+* The tina client is important and fetch data by tina client from gql server and provided to the Hero component as props.
+* 
+* ------------------------------
+* Section Comments:    (Enter "none" if you have no comments)
+* none
+* ------------------------------
+* Input Comments:      (Enter "none" if you have no comments)
+* none
+* ------------------------------
+* Output Comments:     (Enter "none" if you have no comments)
+* None
+* ------------------------------
+* Additional Comments:
+* Question: Did you have to write any unusual code? 
+* Answer  : NO
+*
+*/
