@@ -1,3 +1,5 @@
+'use client';
+
 import { NextPage } from 'next'
 import React from "react";
 import { Hero } from "@/components/custom-ui/landing-page/hero/hero";
