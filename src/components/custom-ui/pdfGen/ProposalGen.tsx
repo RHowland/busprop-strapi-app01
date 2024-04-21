@@ -23,7 +23,7 @@ const ProposalGen: React.FC<{ isDownloadAble?: boolean }> = ({
 
     body: {
       paddingTop: 50,
-      paddingBottom: 35,
+      paddingBottom: 30,
       paddingHorizontal: 45,
     },
     text: {
@@ -58,6 +58,46 @@ const ProposalGen: React.FC<{ isDownloadAble?: boolean }> = ({
     >
       {/* section 2  */}
       <Page size="LETTER" style={styles.body}>
+        {isDownloadAble && (
+          <Text
+            style={{
+              position: "absolute",
+              top: 10,
+              right: 10,
+              textAlign: "center",
+              fontSize: 14,
+              color: "rgba(0,0,0,0.8)",
+            }}
+            render={({ pageNumber, totalPages }) =>
+              `${pageNumber} / ${totalPages}`
+            }
+            fixed
+          />
+        )}
+
+        {isDownloadAble && (
+          <View
+            render={({ subPageNumber }) =>
+              subPageNumber > 1 && (
+                <View
+                  style={{
+                    display: "flex",
+                    flexDirection: "row",
+                    gap: 20,
+                    justifyContent: "center",
+                    marginBottom: 20,
+                  }}
+                >
+                  <Text style={styles.subHeading}>Mr. James Cameron</Text>
+                  <Text style={styles.subHeading}>April 15 , 2024</Text>
+                  <Text style={styles.subHeading}>Page: {subPageNumber}</Text>
+                </View>
+              )
+            }
+            fixed
+          />
+        )}
+
         <View>
           <Text style={{ marginBottom: 20, ...styles.text }}>
             April 15, 2024
@@ -107,30 +147,24 @@ const ProposalGen: React.FC<{ isDownloadAble?: boolean }> = ({
           </>
         )}
 
-        <View style={styles.websiteFeature}>
-          <Text style={styles.text}>- </Text>
-          <Text style={styles.text}>
-            The ability to change the text and images.
-          </Text>
-        </View>
         {/* section 3  */}
-        <View style={styles.websiteFeature}>
-          <Text style={styles.text}>- </Text>
-          <Text style={styles.text}>
-            Save all website content in a reputable database to include all
-            text, all images, and all icons so that this data can be protected
-            through the use of daily database backups.
-          </Text>
-        </View>
 
-        <View style={styles.websiteFeature}>
-          <Text style={styles.text}>- </Text>
-          <Text style={styles.text}>
-            {`The ability to periodically change the color scheme 
-              of your web pages so your website always looks "fresh", 
-              even when your customers visit your site frequently.`}
-          </Text>
-        </View>
+        {featureDes.propoalFeatures.map((propoalFeature, i) => {
+          return (
+            <View key={i + "propoalFeature"} style={styles.websiteFeature}>
+              <Text style={styles.text}>-</Text>
+              <Text style={styles.text}>{propoalFeature}</Text>
+            </View>
+          );
+        })}
+
+        {isDownloadAble ? (
+          "\n"
+        ) : (
+          <>
+            <br /> <br />
+          </>
+        )}
 
         <View>
           <Text style={{ ...styles.text, marginBottom: 20 }}>
@@ -173,6 +207,46 @@ const ProposalGen: React.FC<{ isDownloadAble?: boolean }> = ({
       )}
       {/* section 4 */}
       <Page size="LETTER" style={styles.body}>
+      
+      {isDownloadAble && (
+          <Text
+            style={{
+              position: "absolute",
+              top: 10,
+              right: 10,
+              textAlign: "center",
+              fontSize: 14,
+              color: "rgba(0,0,0,0.8)",
+            }}
+            render={({ pageNumber, totalPages }) =>
+              `${pageNumber} / ${totalPages}`
+            }
+            fixed
+          />
+        )}
+
+        {isDownloadAble && (
+          <View
+            render={({ subPageNumber }) =>
+              subPageNumber > 1 && (
+                <View
+                  style={{
+                    display: "flex",
+                    flexDirection: "row",
+                    gap: 20,
+                    justifyContent: "center",
+                    marginBottom: 20,
+                  }}
+                >
+                  <Text style={styles.subHeading}>Features and Benefits</Text>
+                  <Text style={styles.subHeading}>April 15 , 2024</Text>
+                  <Text style={styles.subHeading}>Page: {subPageNumber}</Text>
+                </View>
+              )
+            }
+            fixed
+          />
+        )}
         <View>
           <Text style={styles.header}>
             {`Features and Benefits that the "Pro-Super-Site" will give to you, your staff, and your customers:`}
@@ -208,10 +282,10 @@ const ProposalGen: React.FC<{ isDownloadAble?: boolean }> = ({
           </View>
         </View>
         {/* section 6 */}
-        {featureDes.map((feature, i) => {
+        {featureDes.featureBenifits.map((feature, i) => {
           return (
             <View
-              style={{ ...styles.feature, marginBottom: 20 }}
+              style={{ ...styles.feature, paddingBottom: 25 }}
               key={i + "Feat"}
             >
               <View style={styles.featureColTitle}>
