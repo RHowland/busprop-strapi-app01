@@ -2,12 +2,17 @@
 "use client";
 
 import React from "react";
-import { Page, Text, View, Document, StyleSheet } from "@react-pdf/renderer";
-import featureDes from "./featureDescriptions.json";
+import { Page, Text, View, Document, StyleSheet  } from "@react-pdf/renderer";
+import PageLayout from "./page/PageLayout";
+import BusLetter from "./bus-letter/BusLetter";
+import Proposal from "./proposal/Proposal";
+import useStore from "@/store";
 
-const ProposalGen: React.FC<{ isDownloadAble?: boolean }> = ({
+const ProposalGen = ({
   isDownloadAble = false,
-}) => {
+  leftBar,
+  letterHead
+}: { isDownloadAble?: boolean  , leftBar : string , letterHead : string}) => {
   // section 1
   const styles = StyleSheet.create({
     header: {
@@ -29,6 +34,7 @@ const ProposalGen: React.FC<{ isDownloadAble?: boolean }> = ({
     text: {
       fontSize: isDownloadAble ? 14 : 18,
       textAlign: "justify",
+      width: "100%",
       color: "rgba(0,0,0,0.8)",
     },
     websiteFeature: {
@@ -56,147 +62,10 @@ const ProposalGen: React.FC<{ isDownloadAble?: boolean }> = ({
       producer="Rich Howland"
       pageMode="useThumbs"
     >
-      {/* section 2  */}
-      <Page size="LETTER" style={styles.body}>
-        {isDownloadAble && (
-          <Text
-            style={{
-              position: "absolute",
-              top: 10,
-              right: 10,
-              textAlign: "center",
-              fontSize: 14,
-              color: "rgba(0,0,0,0.8)",
-            }}
-            render={({ pageNumber, totalPages }) =>
-              `${pageNumber} / ${totalPages}`
-            }
-            fixed
-          />
-        )}
-
-        {isDownloadAble && (
-          <View
-            render={({ subPageNumber }) =>
-              subPageNumber > 1 && (
-                <View
-                  style={{
-                    display: "flex",
-                    flexDirection: "row",
-                    gap: 20,
-                    justifyContent: "center",
-                    marginBottom: 20,
-                  }}
-                >
-                  <Text style={styles.subHeading}>Mr. James Cameron</Text>
-                  <Text style={styles.subHeading}>April 15 , 2024</Text>
-                  <Text style={styles.subHeading}>Page: {subPageNumber}</Text>
-                </View>
-              )
-            }
-            fixed
-          />
-        )}
-
-        <View>
-          <Text style={{ marginBottom: 20, ...styles.text }}>
-            April 15, 2024
-          </Text>
-          {isDownloadAble ? (
-            "\n"
-          ) : (
-            <>
-              <br /> <br />
-            </>
-          )}
-          <Text style={{ marginBottom: 20, ...styles.text }}>
-            James Cameron {isDownloadAble ? "\n" : <br />}
-            Acme Manufacturing, Inc.{isDownloadAble ? "\n" : <br />}
-            1400 North Winston St{isDownloadAble ? "\n" : <br />}
-            Raleigh, NC 28616
-          </Text>
-        </View>
-        {isDownloadAble ? (
-          "\n"
-        ) : (
-          <>
-            <br /> <br />
-          </>
-        )}
-        <Text style={{ marginBottom: 20, ...styles.text }}>
-          Dear Mr. Cameron;
-        </Text>
-        {isDownloadAble ? (
-          "\n"
-        ) : (
-          <>
-            <br /> <br />
-          </>
-        )}
-        <View>
-          <Text style={{ marginBottom: 20, ...styles.text }}>
-            Thank you for taking your time to discuss what you are looking for
-            in a website for your company:
-          </Text>
-        </View>
-        {isDownloadAble ? (
-          "\n"
-        ) : (
-          <>
-            <br /> <br />
-          </>
-        )}
-
-        {/* section 3  */}
-
-        {featureDes.propoalFeatures.map((propoalFeature, i) => {
-          return (
-            <View key={i + "propoalFeature"} style={styles.websiteFeature}>
-              <Text style={styles.text}>-</Text>
-              <Text style={styles.text}>{propoalFeature}</Text>
-            </View>
-          );
-        })}
-
-        {isDownloadAble ? (
-          "\n"
-        ) : (
-          <>
-            <br /> <br />
-          </>
-        )}
-
-        <View>
-          <Text style={{ ...styles.text, marginBottom: 20 }}>
-            I am happy to tell you that your new website will have these
-            important features and more.
-          </Text>
-          {isDownloadAble ? (
-            "\n"
-          ) : (
-            <>
-              <br /> <br />
-            </>
-          )}
-          <Text style={{ ...styles.text, marginBottom: 20 }}>
-            Please see the Benefits and Features section below for details and
-            the Pricing details in the following section.
-          </Text>
-          {isDownloadAble ? (
-            "\n"
-          ) : (
-            <>
-              <br /> <br />
-            </>
-          )}
-        </View>
-        <View>
-          <Text style={styles.text}>
-            Best Regards;{isDownloadAble ? "\n" : <br />}
-            Rich Howland {isDownloadAble ? "\n" : <br />}
-          </Text>
-        </View>
-      </Page>
+      {/* section 1  */}
+      <PageLayout leftBar={leftBar} letterHead={letterHead}>
+        <BusLetter isDownloadAble={isDownloadAble} />
+      </PageLayout>
 
       {!isDownloadAble && (
         <>
@@ -205,112 +74,10 @@ const ProposalGen: React.FC<{ isDownloadAble?: boolean }> = ({
           <br />
         </>
       )}
-      {/* section 4 */}
-      <Page size="LETTER" style={styles.body}>
-      
-      {isDownloadAble && (
-          <Text
-            style={{
-              position: "absolute",
-              top: 10,
-              right: 10,
-              textAlign: "center",
-              fontSize: 14,
-              color: "rgba(0,0,0,0.8)",
-            }}
-            render={({ pageNumber, totalPages }) =>
-              `${pageNumber} / ${totalPages}`
-            }
-            fixed
-          />
-        )}
-
-        {isDownloadAble && (
-          <View
-            render={({ subPageNumber }) =>
-              subPageNumber > 1 && (
-                <View
-                  style={{
-                    display: "flex",
-                    flexDirection: "row",
-                    gap: 20,
-                    justifyContent: "center",
-                    marginBottom: 20,
-                  }}
-                >
-                  <Text style={styles.subHeading}>Features and Benefits</Text>
-                  <Text style={styles.subHeading}>April 15 , 2024</Text>
-                  <Text style={styles.subHeading}>Page: {subPageNumber}</Text>
-                </View>
-              )
-            }
-            fixed
-          />
-        )}
-        <View>
-          <Text style={styles.header}>
-            {`Features and Benefits that the "Pro-Super-Site" will give to you, your staff, and your customers:`}
-          </Text>
-        </View>
-        {!isDownloadAble && (
-          <>
-            <br />
-            <br />
-          </>
-        )}
-        {/* section 5 */}
-        <View style={styles.feature}>
-          <View
-            style={{
-              ...styles.featureColTitle,
-              display: "flex",
-              flexDirection: "column",
-            }}
-          >
-            <Text style={styles.subHeading}>Feature Description</Text>
-            <Text style={styles.text}>---------------------------</Text>
-          </View>
-          <View
-            style={{
-              ...styles.featureColDes,
-              display: "flex",
-              flexDirection: "column",
-            }}
-          >
-            <Text style={styles.subHeading}>Benefit</Text>
-            <Text style={styles.text}>---------------------------</Text>
-          </View>
-        </View>
-        {/* section 6 */}
-        {featureDes.featureBenifits.map((feature, i) => {
-          return (
-            <View
-              style={{ ...styles.feature, paddingBottom: 25 }}
-              key={i + "Feat"}
-            >
-              <View style={styles.featureColTitle}>
-                <Text style={styles.text}>{feature.featureDescription}</Text>
-              </View>
-              <View style={styles.featureColDes}>
-                {feature.benefits?.map((text, i) => {
-                  return (
-                    <Text style={{ ...styles.text }} key={i + "bene"}>
-                      {text}
-                      {isDownloadAble ? (
-                        "\n"
-                      ) : (
-                        <>
-                          <br />
-                        </>
-                      )}
-                    </Text>
-                  );
-                })}
-              </View>
-            </View>
-          );
-        })}
-      </Page>
+      {/* section 2 */}
+      <PageLayout leftBar={leftBar} letterHead={letterHead}>
+        <Proposal isDownloadAble={isDownloadAble} />
+      </PageLayout>
     </Document>
   );
 };
@@ -339,22 +106,11 @@ export default ProposalGen;
  * Section Comments:
  *
  * Section 1:
- * Defines styles for various sections of the PDF document, adjusting font sizes and layouts based on whether the document will be downloaded or viewed online.
- *
+ * This section contains the first page layout of the proposal document, including the business letter addressing the recipient.
+ * 
  * Section 2:
- * Contains the header and introductory message section of the proposal, including recipient details and a thank-you note.
+ * This section contains the second page layout of the proposal document, including the detailed features, benefits, and pricing information of the proposed project.
  *
- * Section 3:
- * Lists specific website features requested by the client, ensuring clarity on project requirements.
- *
- * Section 4:
- * Introduces the "Features and Benefits" section of the proposal, highlighting the advantages of the proposed "Pro-Super-Site".
- *
- * Section 5:
- * Sets up the layout for presenting feature descriptions and their corresponding benefits.
- *
- * Section 6:
- * Maps through feature descriptions and benefits, dynamically populating the content based on the provided data.
  *
  *
  * ------------------------------
