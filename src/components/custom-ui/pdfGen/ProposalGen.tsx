@@ -2,59 +2,17 @@
 "use client";
 
 import React from "react";
-import { Page, Text, View, Document, StyleSheet  } from "@react-pdf/renderer";
+import {Document, StyleSheet  } from "@react-pdf/renderer";
 import PageLayout from "./page/PageLayout";
 import BusLetter from "./bus-letter/BusLetter";
-import Proposal from "./proposal/Proposal";
-import useStore from "@/store";
+import Table from "./table/Table";
 
 const ProposalGen = ({
   isDownloadAble = false,
-  leftBar,
-  letterHead
-}: { isDownloadAble?: boolean  , leftBar : string , letterHead : string}) => {
-  // section 1
-  const styles = StyleSheet.create({
-    header: {
-      fontSize: isDownloadAble ? 18 : 24,
-      marginBottom: 20,
-      textAlign: "justify",
-    },
+  pdfData
 
-    subHeading: {
-      fontSize: isDownloadAble ? 16 : 22,
-      textAlign: "justify",
-    },
+}: { isDownloadAble?: boolean , pdfData : any}) => {
 
-    body: {
-      paddingTop: 50,
-      paddingBottom: 30,
-      paddingHorizontal: 45,
-    },
-    text: {
-      fontSize: isDownloadAble ? 14 : 18,
-      textAlign: "justify",
-      width: "100%",
-      color: "rgba(0,0,0,0.8)",
-    },
-    websiteFeature: {
-      display: "flex",
-      marginBottom: 10,
-      flexDirection: "row",
-      gap: 10,
-    },
-    feature: {
-      display: "flex",
-      flexDirection: "row",
-      gap: 20,
-    },
-    featureColTitle: {
-      flexBasis: isDownloadAble ? "40%" : "25%",
-    },
-    featureColDes: {
-      flexBasis: isDownloadAble ? "60%" : "45%",
-    },
-  });
 
   return (
     <Document
@@ -63,21 +21,32 @@ const ProposalGen = ({
       pageMode="useThumbs"
     >
       {/* section 1  */}
-      <PageLayout leftBar={leftBar} letterHead={letterHead}>
-        <BusLetter isDownloadAble={isDownloadAble} />
-      </PageLayout>
+      {pdfData.map((v : any ,index) =>{
 
-      {!isDownloadAble && (
-        <>
-          <br />
-          <br />
-          <br />
-        </>
-      )}
-      {/* section 2 */}
-      <PageLayout leftBar={leftBar} letterHead={letterHead}>
-        <Proposal isDownloadAble={isDownloadAble} />
-      </PageLayout>
+        if(v.type === "letter"){
+          return (
+            <PageLayout isDownloadAble={isDownloadAble} key={index} >
+              <BusLetter businessLetter={v}  />
+              <br />
+              <br />
+              <br />
+            </PageLayout>
+          )
+        }
+
+        // section 2 
+        if(v.type === "table"){
+          return (
+            <PageLayout  isDownloadAble={isDownloadAble} key={index}>
+              <Table tableData={v}  />
+              <br />
+              <br />
+              <br />
+            </PageLayout>
+          )
+        }
+
+      })}
     </Document>
   );
 };
@@ -92,42 +61,32 @@ export default ProposalGen;
  * Dev Initials : Elias Emon
  * Date Created : 2024-04-18
  * ------------------------------
- * Question: Why was it necessary to create this component?
- * Answer:  This component was necessary to generate a PDF proposal document dynamically based on given feature descriptions and their benefits.
- * It facilitates the creation of professional-looking proposals tailored to the client's needs, enhancing communication and documentation of project details.
+  * Question: Why was it necessary to create this component?
+ * Answer: This component was necessary to create because it serves as the main component for generating PDF proposals. It orchestrates the rendering of different types of content, such as business letters and tables, within the PDF document based on the provided data.
  *
  * ------------------------------
  * Question: What does this component do?
- * Answer: This component generates a PDF proposal document containing sections such as date, recipient details, introductory message, website features,
- * benefits, and pricing details. It dynamically populates feature descriptions and benefits from a JSON file, providing a structured and informative
- * overview of the proposed project.
+ * Answer: This component generates PDF proposals by iterating over the provided data array. For each item in the array, it determines the type of content (letter or table) and renders it accordingly using appropriate sub-components (BusLetter or Table). It wraps each content section with PageLayout for consistent styling and layout.
  *
  * ------------------------------
  * Section Comments:
  *
- * Section 1:
- * This section contains the first page layout of the proposal document, including the business letter addressing the recipient.
+ * Section 1: Render Business Letters
+ * Iterates over the PDF data array and renders business letters using the BusLetter sub-component if the type is "letter".
  * 
- * Section 2:
- * This section contains the second page layout of the proposal document, including the detailed features, benefits, and pricing information of the proposed project.
- *
- *
- *
+ * Section 2: Render Tables
+ * Iterates over the PDF data array and renders tables using the Table sub-component if the type is "table".
+ * 
  * ------------------------------
  * Input Comments:
- * Answer: The component receives a prop `isDownloadAble` which determines whether the PDF document will be downloadable or viewed online.
- * This prop influences the styling and layout of the document.
- *
+ * Answer: The component accepts props including whether the PDF is downloadable and the PDF data array containing information about business letters and tables to be included in the proposal.
  *
  * ------------------------------
  * Output Comments:
- * Anser:  The output is a PDF proposal document containing structured information about the proposed website project, including feature descriptions,
- * benefits, and pricing details.
+ * Answer: None
  *
  * ------------------------------
  * Additional Comments:
  * Question: Did you have to write any unusual code?
- * Answer: No unusual code was required for this component. However, it utilizes React PDF Renderer to generate PDF documents,
- * which might be new for some developers not familiar with this library.
- *
+ * Answer: No unusual code was required for this component. It follows standard patterns for iterating over data and rendering dynamic content in React components.
  */

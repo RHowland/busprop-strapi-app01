@@ -1,40 +1,44 @@
 "use client";
+import { useSearchParams } from 'next/navigation'
 
 import ProposalGen from '@/components/custom-ui/pdfGen/ProposalGen'
 import {useState , useEffect} from 'react'
 import { PDFDownloadLink } from '@react-pdf/renderer';
 import { Button } from '@/components/ui/button';
-import LeftBarPicker from '@/components/custom-ui/leftBarPicker/LeftBarPicker';
-import useStore from '@/store';
-import LetterHeadPicker from '@/components/custom-ui/letterHeadPicker/LetterHeadPicker';
 
 
 const PdfGen = () => {
   // section 1 
-  const [isClient, setIsClient] = useState(false);
-  const {leftBar , letterHead} = useStore(( state : any) => state);
+  const [pdfData, setPdfData] = useState();
+  const searchParams = useSearchParams();
+  const version : any = searchParams.get("version");
+  const name : any  = searchParams.get("name");
+
 
   useEffect(() => {
-    setIsClient(true);
+    (async ()=>{
+        const result : any = await fetch(`http://localhost:3000/api/bus-data?version=${version}&name=${name}`)
+        const data = await result.json();
+        console.log(data);
+        setPdfData(data.data);
+    })();
   }, []);
+
+
   return (
     <div className="container mx-auto px-4 py-10">
       {/* section 4 */}
-      <div className='flex gap-10'>
-        <LeftBarPicker />
-        <LetterHeadPicker />
-      </div>
       <div className="flex justify-center mt-10 mb-10">
         {/* section 2  */}
-        {isClient && (
-            <PDFDownloadLink  document={<ProposalGen letterHead={letterHead.image} leftBar={leftBar.image} isDownloadAble={true} />} fileName="BusinessProposal.pdf">
+        { pdfData && (
+            <PDFDownloadLink  document={<ProposalGen pdfData={pdfData}  isDownloadAble={true} />} fileName={name.split(".")[0]}>
               {({ blob, url, loading, error }) => (<Button className='group' size="lg"> {loading ? 'Loading document...' : 'Download In Pdf!'}</Button>  )}
             </PDFDownloadLink>
         )}
         
       </div>
       {/* section 3 */}
-      {isClient && (<ProposalGen letterHead={letterHead.image} leftBar={leftBar.image} /> )}
+      {pdfData  && (<ProposalGen pdfData={pdfData}  /> )}
     </div>
   )
 }
