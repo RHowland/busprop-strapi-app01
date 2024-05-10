@@ -10,17 +10,19 @@ import {
 
 const styles = StyleSheet.create({
   body: {
-    paddingTop: 105,
     paddingBottom: 40,
-    paddingLeft: 75,
-    paddingRight: 45,
+  },
+  content : {
+    marginLeft: 70,
+    marginRight: 25
   },
   header: {
     position: "absolute",
     top: 0,
     left: 0,
-    height: 100,
     width: "100vw",
+    height: "100vh",
+    zIndex: -100
   },
   headerImage: {
     width: "100%",
@@ -28,9 +30,7 @@ const styles = StyleSheet.create({
   },
   leftBar: {
     position: "absolute",
-    top: 105,
     left: 5,
-    height: "100%",
     width: 60,
   },
   leftBarImage: {
@@ -50,24 +50,39 @@ const styles = StyleSheet.create({
 const PageLayout = ({
   children,
   isDownloadAble = true,
-  leftBar,
-  letterHead
 }: {
   children: React.ReactNode;
   isDownloadAble?: boolean;
-  leftBar: string;
-  letterHead: string;
 }) => {
   return (
-    <Page wrap size="LETTER" style={styles.body}>
+    <Page wrap={true} size="LETTER" style={styles.body}>
       {/* section 1  */}
-      <View style={styles.header} fixed>
-        <Image style={styles.headerImage} src={`/letterHead/header/${letterHead}`} />
-      </View>
-      {/* section 2 */}
-      <View style={styles.leftBar} fixed>
-        <Image style={styles.leftBarImage} src={`/letterHead/leftBar/${leftBar}`} />
-      </View>
+      <View style={{marginBottom: "1vh"}} render={({ pageNumber })=>{
+          if(pageNumber === 1){
+            return (
+              <>
+                <View style={{width: "100vw", height: "12vh"}}>
+                  <Image style={styles.headerImage} src={`/letterHead/header/Header1.png`} />
+                </View>
+                <View style={{...styles.leftBar, top: "13vh" , height: "84vh"}} >
+                  <Image style={styles.leftBarImage} src={`/letterHead/leftBar/Left_Bar1.png`} />
+                </View>
+              </>
+            )
+          } else{
+            return (
+              <>
+                <View style={{width: "100vw", height: "6vh"}} >
+                  <Image  style={styles.headerImage} src={`/letterHead/header/Header2.png`} />
+                </View>
+                <View style={{...styles.leftBar, top: "7vh" , height: "90vh"}} >
+                  <Image style={styles.leftBarImage} src={`/letterHead/leftBar/Left_Bar1.png`} />
+                </View>
+              </>
+            )
+          }
+      }} fixed />
+      
       {/* section 3 */}
       {isDownloadAble && (
         <Text
@@ -78,7 +93,7 @@ const PageLayout = ({
           fixed
         />
       )}
-      <View>{children}</View>
+      <View style={{...styles.content , marginLeft: !isDownloadAble ? 0 : 70}}>{children}</View>
     </Page>
   );
 };
